@@ -1,0 +1,30 @@
+{
+  "name": "lim011-fe-md-links",
+  "version": "1.0.0",
+  "description": "## Preámbulo",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest --verbose --coverage",
+    "pretest": "npm run eslint",
+    "eslint": "eslint --ext .js src/ test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nesnip/LIM011-fe-md-links.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nesnip/LIM011-fe-md-links/issues"
+  },
+  "homepage": "https://github.com/nesnip/LIM011-fe-md-links#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "jest": "^25.1.0"
+  }
+}
