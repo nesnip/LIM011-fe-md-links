@@ -16,14 +16,17 @@ const allPaths = (str) => fs.readdir(str, (err, files) => {
     console.log(`Unable to scan directory: ${err}`);
   }
 
-  files.forEach((file) => (fs.statSync(file).isFile());
+  files.forEach((file) => {
+    if (fs.statSync(file).isFile()) {
+      console.log(file);
+    }
+  });
 });
 
 console.log(currentPath);
 console.log(isDirectory(currentPath));
-console.log(allPaths(currentPath));
 
-console.log(fs.readdirSync('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links'));
+// console.log(fs.readdirSync('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links'));
 
 module.exports = {
   isAbsolute,
