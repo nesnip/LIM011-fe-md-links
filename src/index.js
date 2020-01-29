@@ -11,7 +11,7 @@ const isDirectory = (str) => fs.statSync(str).isDirectory();
 
 const isMdFile = (str) => path.extname(str) === '.md';
 
-const allPaths = (str) => fs.readdir(str, (err, files) => {
+fs.readdir(currentPath, (err, files) => {
   if (err) {
     console.log(`Unable to scan directory: ${err}`);
   }
