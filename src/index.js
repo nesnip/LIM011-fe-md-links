@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 
-const currentPath = path.resolve();
-const directoryPath = path.join(__dirname);
+// const currentPath = path.resolve();
+// const directoryPath = path.join(__dirname);
 
 const isAbsolute = (str) => path.isAbsolute(str);
 
@@ -28,7 +28,12 @@ const recursion = (ruta) => {
   });
   return arr;
 };
-console.log(recursion('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src'));
+
+const readFile = (str) => fs.readFileSync(str, 'utf8');
+
+const readlink = (str) => ;
+
+console.log(readFile('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/README.md'));
 
 module.exports = {
   isAbsolute,
@@ -36,4 +41,5 @@ module.exports = {
   isFile,
   isMdFile,
   getAllPaths,
+  recursion,
 };

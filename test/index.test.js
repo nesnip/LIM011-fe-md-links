@@ -1,7 +1,7 @@
 const myFunctions = require('../src/index');
 
 const {
-  isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths,
+  isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths, recursion,
 } = myFunctions;
 
 describe('isAbsolute', () => {
@@ -33,7 +33,7 @@ describe('toAbsolute', () => {
 
 describe('isFile', () => {
   it('Debería ser una función', () => {
-    expect(typeof isDirectory).toBe('function');
+    expect(typeof isFile).toBe('function');
   });
   it('Es una función que determina cuando una ruta es un directorio', () => {
     const input = '/home/marines/Escritorio/Laboratoria';
@@ -69,7 +69,18 @@ describe('getAllPaths', () => {
   });
   it('Es una función que obtiene las rutas absolutas de cada archivo de un directorio', () => {
     const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src';
-    const output = ['index.js'];
+    const output = ['/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md', '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/index.js'];
     expect(getAllPaths(input)).toEqual(output);
+  });
+});
+
+describe('recursion', () => {
+  it('Debería ser una función', () => {
+    expect(typeof recursion).toBe('function');
+  });
+  it('Es una función que retorna las rutas absolutas de archivos Markdown', () => {
+    const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src';
+    const output = ['/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md'];
+    expect(recursion(input)).toEqual(output);
   });
 });
