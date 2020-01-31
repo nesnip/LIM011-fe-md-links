@@ -1,11 +1,11 @@
 const myFunctions = require('../src/index');
 
 const {
-  isAbsolute, toAbsolute, isDirectory, isMdFile,
+  isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths,
 } = myFunctions;
 
 describe('isAbsolute', () => {
-  it('Debería de ser una función', () => {
+  it('Debería ser una función', () => {
     expect(typeof isAbsolute).toBe('function');
   });
   it('Es una función que determina cuando una ruta es absoluta', () => {
@@ -21,7 +21,7 @@ describe('isAbsolute', () => {
 });
 
 describe('toAbsolute', () => {
-  it('Debería de ser una función', () => {
+  it('Debería ser una función', () => {
     expect(typeof toAbsolute).toBe('function');
   });
   it('Es una función que convierte una ruta realtiva en absoluta', () => {
@@ -31,34 +31,45 @@ describe('toAbsolute', () => {
   });
 });
 
-describe('isDirectory', () => {
-  it('Debería de ser una función', () => {
+describe('isFile', () => {
+  it('Debería ser una función', () => {
     expect(typeof isDirectory).toBe('function');
   });
   it('Es una función que determina cuando una ruta es un directorio', () => {
     const input = '/home/marines/Escritorio/Laboratoria';
-    const output = true;
-    expect(isDirectory(input)).toEqual(output);
+    const output = false;
+    expect(isFile(input)).toEqual(output);
   });
   it('Es una función que determina cuando una ruta NO es un directorio', () => {
     const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/index.js';
-    const output = false;
-    expect(isDirectory(input)).toEqual(output);
+    const output = true;
+    expect(isFile(input)).toEqual(output);
   });
 });
 
 describe('isMdFile', () => {
-  it('Debería de ser una función', () => {
+  it('Debería ser una función', () => {
     expect(typeof isMdFile).toBe('function');
   });
   it('Es una función que determina si el archivo tiene formato .md', () => {
-    const input = 'README.md';
+    const input = '/home/README.md';
     const output = true;
     expect(isMdFile(input)).toEqual(output);
   });
   it('Es una función que determina si el archivo NO tiene formato .md', () => {
-    const input = 'index.js';
+    const input = '/home/index.js';
     const output = false;
     expect(isMdFile(input)).toEqual(output);
+  });
+});
+
+describe('getAllPaths', () => {
+  it('Debería ser una función', () => {
+    expect(typeof getAllPaths).toBe('function');
+  });
+  it('Es una función que obtiene las rutas absolutas de cada archivo de un directorio', () => {
+    const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src';
+    const output = ['index.js'];
+    expect(getAllPaths(input)).toEqual(output);
   });
 });
