@@ -17,6 +17,9 @@
   },
   "author": "",
   "license": "ISC",
+  "bin": {
+    "md-links": "src/cli.js"
+  },
   "bugs": {
     "url": "https://github.com/nesnip/LIM011-fe-md-links/issues"
   },
@@ -25,6 +28,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
+    "fetch-mock": "^9.0.0-beta.2",
     "jest": "^25.1.0"
   },
   "dependencies": {

@@ -1,7 +1,9 @@
+const path = require('path');
 const myFunctions = require('../src/index');
 
 const {
-  isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths, recursion,
+  isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths,
+  recursion, readFile, mdToString, getLinks, validate,
 } = myFunctions;
 
 describe('isAbsolute', () => {
@@ -24,9 +26,9 @@ describe('toAbsolute', () => {
   it('Debería ser una función', () => {
     expect(typeof toAbsolute).toBe('function');
   });
-  it('Es una función que convierte una ruta realtiva en absoluta', () => {
-    const input = './baz';
-    const output = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/baz';
+  it('Es una función que convierte una ruta relativa en absoluta', () => {
+    const input = '../baz';
+    const output = path.resolve(__dirname, input);
     expect(toAbsolute(input)).toEqual(output);
   });
 });
@@ -36,12 +38,12 @@ describe('isFile', () => {
     expect(typeof isFile).toBe('function');
   });
   it('Es una función que determina cuando una ruta es un directorio', () => {
-    const input = '/home/marines/Escritorio/Laboratoria';
+    const input = __dirname;
     const output = false;
     expect(isFile(input)).toEqual(output);
   });
   it('Es una función que determina cuando una ruta NO es un directorio', () => {
-    const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/index.js';
+    const input = __filename;
     const output = true;
     expect(isFile(input)).toEqual(output);
   });
@@ -52,12 +54,12 @@ describe('isMdFile', () => {
     expect(typeof isMdFile).toBe('function');
   });
   it('Es una función que determina si el archivo tiene formato .md', () => {
-    const input = '/home/README.md';
+    const input = 'README.md';
     const output = true;
     expect(isMdFile(input)).toEqual(output);
   });
   it('Es una función que determina si el archivo NO tiene formato .md', () => {
-    const input = '/home/index.js';
+    const input = 'index.js';
     const output = false;
     expect(isMdFile(input)).toEqual(output);
   });
@@ -68,8 +70,8 @@ describe('getAllPaths', () => {
     expect(typeof getAllPaths).toBe('function');
   });
   it('Es una función que obtiene las rutas absolutas de cada archivo de un directorio', () => {
-    const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src';
-    const output = ['/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md', '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/index.js'];
+    const input = __dirname;
+    const output = [path.resolve(__filename), path.resolve(__dirname, 'md-links.test.js')];
     expect(getAllPaths(input)).toEqual(output);
   });
 });
@@ -79,8 +81,110 @@ describe('recursion', () => {
     expect(typeof recursion).toBe('function');
   });
   it('Es una función que retorna las rutas absolutas de archivos Markdown', () => {
-    const input = '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src';
-    const output = ['/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md'];
+    const input = path.resolve(__dirname, '../src');
+    const output = ['/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md', '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md'];
     expect(recursion(input)).toEqual(output);
+  });
+});
+
+describe('readFile', () => {
+  it('Debería ser una función', () => {
+    expect(typeof readFile).toBe('function');
+  });
+  it('Es una función que retorna la información que hay dentro de un archivo md', () => {
+    const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
+    const output = 'Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/400),\n[catch-error](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)';
+    expect(readFile(input)).toEqual(output);
+  });
+});
+
+describe('mdToString', () => {
+  it('Debería ser una función', () => {
+    expect(typeof mdToString).toBe('function');
+  });
+  it('Es una función', () => {
+    const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
+    const output = ['Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/400),\n[catch-error](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)'];
+    expect(mdToString(input)).toEqual(output);
+  });
+});
+
+describe('getLinks', () => {
+  it('Debería ser una función', () => {
+    expect(typeof getLinks).toBe('function');
+  });
+  it('Es una función que retorna un objeto con propiedad href, text, file por cada link', () => {
+    const input = path.resolve(__dirname, '../src');
+    const output = [{
+      href: 'https://nodejs.org/en/',
+      text: 'Node.js',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+    },
+    {
+      href: 'https://httpbin.org/status/400',
+      text: 'error',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+    },
+    {
+      href:
+     'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
+      text: 'catch-error',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+    },
+    {
+      href: 'https://github.com/markdown-it/markdown-it',
+      text: 'markdown-it',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md',
+    },
+    {
+      href:
+     'https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_Expressions',
+      text: 'expresiones regulares (<code>RegExp</code>)',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md',
+    }];
+    expect(getLinks(input)).toEqual(output);
+  });
+});
+
+describe('validate', () => {
+  it('Debería ser una función', () => {
+    expect(typeof validate).toBe('function');
+  });
+  it('Es una función que valida links', (done) => {
+    const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
+    const output = [{
+      href: 'https://nodejs.org/en/',
+      text: 'Node.js',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      status: 200,
+      ok: 'OK',
+    },
+    {
+      href: 'https://httpbin.org/status/400',
+      text: 'error',
+      file:
+     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      status: 400,
+      message: 'fail',
+    },
+    {
+      href:
+      'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
+      text: 'catch-error',
+      file:
+      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      status: 'this file doesn\'t have status',
+      message: 'fail',
+    }];
+    validate(input).then((res) => {
+      expect(res).toEqual(output);
+      done();
+    });
   });
 });
