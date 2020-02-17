@@ -1,14 +1,36 @@
-const mdLinks = require('./md-links');
-const stats = require('./stats');
+const mdLinksFunction = require('./md-links');
+const statsFunctions = require('./stats');
+
+const { mdLinks } = mdLinksFunction;
+const { total, unique, broken } = statsFunctions;
 
 const cli = (path, options) => {
   if (options === '--validate') {
     return mdLinks(path, { validate: true }).then((res) => {
-      let validar = '';
-      res.forEach((element) => {
-        validar += `${element.file} ${element.href} ${element.text} ${element.status} ${element.message} \n`;
+      let validLinks = '';
+      res.forEach((el) => {
+        validLinks += `${el.file} ${el.href} ${el.message} ${el.status} ${el.text} \n`;
       });
-      return validar;
+      return validLinks;
+    });
+  } if (options === '--stats') {
+    return mdLinks(path, { validate: true }).then((res) => {
+      const statsValue = `Total: ${total(res)}\nUnique: ${unique(res)}`;
+      return statsValue;
+    });
+  } if (options === '--stats --validate' || options === '--validate --stats') {
+    return mdLinks(path, { validate: true }).then((res) => {
+      const validStats = `Total: ${total(res)}\nUnique: ${unique(res)}\nBroken: ${broken(res)}`;
+      return validStats;
     });
   }
+  return mdLinks(path, { validate: false }).then((res) => {
+    let links = '';
+    res.forEach((el) => {
+      links += `${el.file} ${el.href} ${el.text}\n`;
+    });
+    return links;
+  });
 };
+
+module.exports = { cli };

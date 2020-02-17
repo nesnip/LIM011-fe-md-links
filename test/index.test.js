@@ -3,7 +3,7 @@ const myFunctions = require('../src/index');
 
 const {
   isAbsolute, toAbsolute, isFile, isMdFile, getAllPaths,
-  recursion, readFile, mdToString, getLinks, validate,
+  recursion, readFile, mdToString, getLinks,
 } = myFunctions;
 
 describe('isAbsolute', () => {
@@ -28,7 +28,7 @@ describe('toAbsolute', () => {
   });
   it('Es una función que convierte una ruta relativa en absoluta', () => {
     const input = '../baz';
-    const output = path.resolve(__dirname, input);
+    const output = path.resolve(input);
     expect(toAbsolute(input)).toEqual(output);
   });
 });
@@ -70,8 +70,8 @@ describe('getAllPaths', () => {
     expect(typeof getAllPaths).toBe('function');
   });
   it('Es una función que obtiene las rutas absolutas de cada archivo de un directorio', () => {
-    const input = __dirname;
-    const output = [path.resolve(__filename), path.resolve(__dirname, 'md-links.test.js')];
+    const input = path.resolve(__dirname, '../src/carpeta');
+    const output = [path.resolve(__dirname, '../src/carpeta/archivo.md')];
     expect(getAllPaths(input)).toEqual(output);
   });
 });
@@ -93,7 +93,7 @@ describe('readFile', () => {
   });
   it('Es una función que retorna la información que hay dentro de un archivo md', () => {
     const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
-    const output = 'Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/400),\n[catch-error](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)';
+    const output = 'Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/),\n[Asincronía](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)';
     expect(readFile(input)).toEqual(output);
   });
 });
@@ -104,7 +104,7 @@ describe('mdToString', () => {
   });
   it('Es una función', () => {
     const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
-    const output = ['Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/400),\n[catch-error](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)'];
+    const output = ['Tópicos: [Node.js](https://nodejs.org/en/),\n[error](https://httpbin.org/status/),\n[Asincronía](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)'];
     expect(mdToString(input)).toEqual(output);
   });
 });
@@ -122,7 +122,7 @@ describe('getLinks', () => {
      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
     },
     {
-      href: 'https://httpbin.org/status/400',
+      href: 'https://httpbin.org/status/',
       text: 'error',
       file:
      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
@@ -130,7 +130,7 @@ describe('getLinks', () => {
     {
       href:
      'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
-      text: 'catch-error',
+      text: 'Asincronía',
       file:
      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
     },
@@ -148,43 +148,5 @@ describe('getLinks', () => {
      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/example.md',
     }];
     expect(getLinks(input)).toEqual(output);
-  });
-});
-
-describe('validate', () => {
-  it('Debería ser una función', () => {
-    expect(typeof validate).toBe('function');
-  });
-  it('Es una función que valida links', (done) => {
-    const input = path.resolve(__dirname, '../src/carpeta/archivo.md');
-    const output = [{
-      href: 'https://nodejs.org/en/',
-      text: 'Node.js',
-      file:
-     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
-      status: 200,
-      ok: 'OK',
-    },
-    {
-      href: 'https://httpbin.org/status/400',
-      text: 'error',
-      file:
-     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
-      status: 400,
-      message: 'fail',
-    },
-    {
-      href:
-      'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
-      text: 'catch-error',
-      file:
-      '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
-      status: 'this file doesn\'t have status',
-      message: 'fail',
-    }];
-    validate(input).then((res) => {
-      expect(res).toEqual(output);
-      done();
-    });
   });
 });

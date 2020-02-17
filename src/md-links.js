@@ -1,8 +1,8 @@
-/* eslint-disable max-len */
 const indexFunctions = require('../src/index');
+const validate = require('./validate');
 
 const {
-  isAbsolute, toAbsolute, getLinks, validate,
+  isAbsolute, toAbsolute, getLinks,
 } = indexFunctions;
 
 const mdLinks = (route, options) => {
@@ -10,10 +10,7 @@ const mdLinks = (route, options) => {
   if (options.validate === false) {
     return Promise.resolve(getLinks(absRoute));
   }
-  return validate(absRoute);
+  return validate.validate(absRoute);
 };
-
-// console.log(mdLinks('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md', true));
-mdLinks('/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta', { validate: true }).then((res) => console.log(res));
 
 module.exports = { mdLinks };
