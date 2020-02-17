@@ -5,7 +5,9 @@ const { mdLinks } = mdLinksFunction;
 const { total, unique, broken } = statsFunctions;
 
 const cli = (path, options) => {
-  if (options === '--validate') {
+  if (path === undefined) {
+    return console.log('Enter a valid path');
+  } if (options === '--validate') {
     return mdLinks(path, { validate: true }).then((res) => {
       let validLinks = '';
       res.forEach((el) => {

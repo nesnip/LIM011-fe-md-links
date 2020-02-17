@@ -7,5 +7,4 @@ const { cli } = mdLinksCli;
 const path = process.argv[2];
 const options = process.argv[4] === undefined ? process.argv[3] : `${process.argv[3]} ${process.argv[4]}`;
 
-cli(path, options).then((res) => console.log(res))
-  .catch(() => console.log('enter path'));
+cli(path, options).then((res) => console.log(res)).catch(() => console.log('enter path'));
