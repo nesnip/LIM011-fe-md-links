@@ -6,7 +6,7 @@ const isAbsolute = (str) => path.isAbsolute(str);
 
 const toAbsolute = (relative) => path.resolve(relative);
 
-const isFile = (str) => fs.statSync(str).isFile();
+const isDirectory = (str) => fs.statSync(str).isDirectory();
 
 const isMdFile = (str) => path.extname(str) === '.md';
 
@@ -14,17 +14,16 @@ const getAllPaths = (str) => fs.readdirSync(str).map((file) => path.resolve(str,
 
 const recursion = (ruta) => {
   let arr = [];
-  if (isFile(ruta)) {
-    if (isMdFile(ruta)) {
-      arr = arr.concat(ruta);
-      return arr;
-    }
-    return [];
+  if (isDirectory(ruta)) {
+    getAllPaths(ruta).forEach((el) => {
+      arr = arr.concat(recursion(el));
+    });
+    return arr;
+  } if (isMdFile(ruta)) {
+    arr = arr.concat(ruta);
+    return arr;
   }
-  getAllPaths(ruta).forEach((el) => {
-    arr = arr.concat(recursion(el));
-  });
-  return arr;
+  return [];
 };
 
 const readFile = (str) => fs.readFileSync(str, 'utf8');
@@ -50,7 +49,7 @@ const getLinks = (ruta) => {
 module.exports = {
   isAbsolute,
   toAbsolute,
-  isFile,
+  isDirectory,
   isMdFile,
   getAllPaths,
   recursion,

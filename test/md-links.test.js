@@ -13,21 +13,18 @@ describe('mdLinks', () => {
     const output = [{
       href: 'https://nodejs.org/en/',
       text: 'Node.js',
-      file:
-       '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
     },
     {
       href: 'https://httpbin.org/status/',
       text: 'error',
-      file:
-       '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
     },
     {
       href:
        'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
       text: 'Asincronía',
-      file:
-       '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
     }];
     mdLinks(input, options).then((res) => {
       expect(res).toEqual(output);
@@ -40,16 +37,14 @@ describe('mdLinks', () => {
     const output = [{
       href: 'https://nodejs.org/en/',
       text: 'Node.js',
-      file:
-     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
       status: 200,
       message: 'OK',
     },
     {
       href: 'https://httpbin.org/status/',
       text: 'error',
-      file:
-     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
       status: 404,
       message: 'fail',
     },
@@ -57,8 +52,7 @@ describe('mdLinks', () => {
       href:
      'https://carlosazaustre.com/manejando-la-asincronia-en-javascript/',
       text: 'Asincronía',
-      file:
-     '/home/marines/Escritorio/Laboratoria/MD LINKS/LIM011-fe-md-links/src/carpeta/archivo.md',
+      file: path.resolve(__dirname, '../src/carpeta/archivo.md'),
       status: 'this file does not have status',
       message: 'fail',
     }];

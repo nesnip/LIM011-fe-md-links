@@ -5,12 +5,12 @@ const {
   isAbsolute, toAbsolute, getLinks,
 } = indexFunctions;
 
-const mdLinks = (route, options) => {
+const mdLinks = (route, options) => new Promise((resolve) => {
   const absRoute = isAbsolute(route) ? route : toAbsolute(route);
   if (options.validate === false) {
-    return Promise.resolve(getLinks(absRoute));
+    resolve(getLinks(absRoute));
   }
-  return validate.validate(absRoute);
-};
+  resolve(validate.validate(absRoute));
+});
 
 module.exports = { mdLinks };

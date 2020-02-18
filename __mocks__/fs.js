@@ -7,4 +7,5 @@ Object.assign(fetchMock.config, {
 
 fetchMock
   .mock('https://nodejs.org/en/', 200)
-  .mock('https://httpbin.org/status/400', 400);
+  .mock('https://httpbin.org/status/400', 404)
+  .mock('https://carlosazaustre.com/manejando-la-asincronia-en-javascript/', 400);
